@@ -1,6 +1,6 @@
 // Variables
 var button = d3.select("#filter-btn");
-var inputField1 = d3.select("#date");
+var inputField1 = d3.select("#datetime");
 //Bonus
 var inputField2 = d3.select("#city");
 var inputField3 = d3.select("#country");
@@ -33,7 +33,7 @@ button.on("click", () => {
   var inputShape = inputField5.property("value").trim();
 
   // Filter by field matching input value
-  var filterDate = data.filter(data => data.date === inputDate);
+  var filterDate = data.filter(data => date.datetime === inputDate);
   console.log(filterDate)
   //Add On Bonus
   var filterCity = data.filter(data => data.city === inputCity);
@@ -50,7 +50,7 @@ button.on("click", () => {
   //console.log(filterData)
   var filterShape = data.filter(data => data.shape === inputShape);
   console.log(filterShape)
-  var filterData = data.filter(data => data.date === inputDate && data.city === inputCity && data.state === inputState && data.country === inputCountry && data.shape === inputShape);
+  var filterData = data.filter(data => data.datetime === inputDate && data.city === inputCity && data.state === inputState && data.country === inputCountry && data.shape === inputShape);
   console.log(filterData)
   
 
@@ -69,7 +69,7 @@ button.on("click", () => {
   
     //}
 
-    else if (response.filterData.length === 0 && ((response.filterCity.length !== 0 || response.filterDate.length !== 0))){
+    else if (response.filterData.length === 0 && (( response.filterShape.length !== 0 || response.filterCountry.length !== 0 || response.filterState.length !== 0 || response.filterCity.length !== 0 || response.filterDate.length !== 0))){
         populate(filterCity) || populate(filterDate) || populate(filterState) || populate(filterCountry) || populate(filterShape);
     
     }
