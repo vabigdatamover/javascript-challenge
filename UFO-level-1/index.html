@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>UFO Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <!-- CSS File -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <!-- Header Wrapper -->
+          <a class="navbar-brand" href="index.html" style="font-family: 'Michroma', sans-serif;">UFO Sightings
+              <a class="navbar-brand" href="index.html" style="font-family: 'Michroma', sans-serif;">UFO Sightings
+                  <a class="navbar-brand" href="index.html" style="font-family: 'Michroma', sans-serif;">UFO Sightings
+                      <a class="navbar-brand" href="index.html" style="font-family: 'Michroma', sans-serif;">UFO Sightings
+                          <a class="navbar-brand" href="index.html" style="font-family: 'Michroma', sans-serif;">UFO Sightings
+                              <a class="navbar-brand" href="index.html" style="font-family: 'Michroma', sans-serif;">UFO Sightings
+                                  <a class="navbar-brand" href="index.html" style="font-family: 'Michroma', sans-serif;">UFO Sightings
+                                      <a class="navbar-brand" href="index.html" style="font-family: 'Michroma', sans-serif;">UFO Sightings
+                                      
+                                     
+          
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div class="hero text-center">
+      <!-- Pop Up Center Display -->
+      <h1 style="font-family: 'Michroma', sans-serif; text-shadow: 1px 1px 2px black, 0 0 25px whitesmoke, 0 0 5px #618D1B;">Unidentified Flying Object <br> Sightings</h1>
+      <p style="color: #618D1B; text-shadow: 1px 1px 2px black, 0 0 25px whitesmoke, 0 0 5px #618D1B; font-size: 30px;">The Truth Shall Set You Free</p>
+      <p style="color: #618D1B; text-shadow: 1px 1px 2px black, 0 0 25px whitesmoke, 0 0 5px #618D1B; font-size: 30px;">ET Has Already Phoned Home</p>
+      <img class="img-center" src="alien.svg">
+    </div>
+    <div class="container">
+      <div class="row margin-top-50">
+        <div class="col-md-2">
+          <aside class="filters">
+            <div class="panel panel-default">
+              <!-- Filter Panel Header -->
+              <div class="panel-heading" style="font-family: 'Michroma', sans-serif;">Filter Results</div>
+              <div class="panel-body">
+                <form>
+                  <div class="form-group">
+                    <ul class="list-group" id="filters" >
+                      <li class="filter list-group-item" style="background-color: black;">
+                        <!-- Date input -->
+                        <label for="date">Enter a Date</label>
+                        <!-- Input Class for app.js, placeholder of 1/1/2010 -->
+                        <input class="form-control" id="datetime" type="text" placeholder="1/11/2010">
+                      </li>
+                      <li class="filter list-group-item" style="background-color: black;">
+                        
+                        
+                      <!-- </li> -->
+
+                    </ul>
+                  </div>
+                  <!-- Filter Button -->
+                  <button id="filter-btn" type="submit" class="btn btn-default btn-lg btn-block">Filter Table</button>
+                  <!-- Reset Button -->
+                  <button id="reset-btn" type="reset" class="btn btn-default btn-lg btn-block">Reset Table</button>
+                </form>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="col-md-10">
+          <div id="table-area" class="">
+            <!-- Shows the table as striped -->
+            <table id="ufo-table" class="table table-striped">
+              <thead>
+                <tr>
+                  <!-- Display Headers -->
+                  <th class="table-head">Date</th>
+                  <th class="table-head">City</th>
+                  <th class="table-head">State</th>
+                  <th class="table-head">Country</th>
+                  <th class="table-head">Shape</th>
+                  <th class="table-head">Duration</th>
+                  <th class="table-head">Comments</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer" style="text-align: center;">
+      <!-- Footer -->
+      <span class="bottom"  style="font-family: 'Michroma', sans-serif;">UFO Sightings</span>
+    </footer>
+  </div>
+  <!-- Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
+  <!-- Links data file data.js -->
+  <script src="data.js"></script>
+  <!-- Links app.js -->
+  <script src="app.js"></script>
+</body>
+
+</html>
