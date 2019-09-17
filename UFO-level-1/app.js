@@ -1,11 +1,14 @@
-// Variables
+// Filter Button Variable
 var button = d3.select("#filter-btn");
-//Input Field 1 for Date Time
+//Input Field 1 for Date Time Variable
 var inputField1 = d3.select("#datetime");
+//TBODY in HTML
 var tbody = d3.select("tbody");
+//Reset Buttom Variable
 var resetbtn = d3.select("#reset-btn");
+//Column Variable
 var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
-
+//Populate Table
 var populate = (dataInput) => {
 
   dataInput.forEach(ufo_sightings => {
@@ -18,7 +21,7 @@ var populate = (dataInput) => {
 //Populate table
 populate(data);
 
-// Filter by attribute
+// Filter tables with click
 button.on("click", () => {
   d3.event.preventDefault();
   var inputDate = inputField1.property("value").trim();
@@ -28,9 +31,9 @@ button.on("click", () => {
   var filterData = data.filter(data => data.datetime === inputDate);
   console.log(filterData)
 
-  // Add filtered sighting to table
+  // Add Data to table
   tbody.html("");
-
+  //Filter Data and Filter Date response
   let response = {
     filterData, filterDate
   }
@@ -43,10 +46,10 @@ button.on("click", () => {
   
     }
     else {
-      tbody.append("tr").append("td").text("No results found!"); 
+      tbody.append("tr").append("td").text("Encounter results not found!"); 
     }
 })
-
+//Reset Button Code
 resetbtn.on("click", () => {
   tbody.html("");
   populate(data)
