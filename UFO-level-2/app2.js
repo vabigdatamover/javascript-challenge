@@ -1,157 +1,87 @@
-// Get references to the elements of the DOM
-var $tbody = document.querySelector("tbody");
-var $dateTimeInput = document.querySelector("#date_time");
-var $cityInput = document.querySelector("#city");
-var $stateInput = document.querySelector("#state");
-var $countryInput = document.querySelector("#country");
-var $shapeInput = document.querySelector("#shape");
-var $searchBtn = document.querySelector("#search");
-var $recordCounter = document.querySelector("#recordCounter");
-var $pages = document.querySelector("#pages");
-var $loadBtn = document.querySelector("#load");
-var $nextBtn = document.querySelector("#next");
-var $prevBtn = document.querySelector("#prev");
+// Variables
+var button = d3.select("#filter-btn");
+var inputField1 = d3.select("#datetime");
+//Bonus
+var inputField2 = d3.select("#city");
+var inputField3 = d3.select("#country");
+var inputField4 = d3.select("#shape");
+//End Bonus
+var tbody = d3.select("tbody");
+var resetbtn = d3.select("#reset-btn");
+var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
 
-// Add event listeners
-$searchBtn.addEventListener("click", handleSearchButtonClick);
-$loadBtn.addEventListener("click", handleReloadButtonClick);
-$nextBtn.addEventListener("click", handleNextButtonClick);
-$prevBtn.addEventListener("click", handlePrevButtonClick);
-$pages.addEventListener("change", handlePagesChange);
+var populate = (dataInput) => {
 
-// Initialize global variables
-var filteredData = dataSet;
-var count = 0;
-
-// Define Event handler functions
-// handleNextButtonClick increments count and renders
-function handleNextButtonClick() {
-    count++;
-    renderTable();
-}
-// handlePrevButtonClick decrements count and renders
-function handlePrevButtonClick() {
-    count--;
-    renderTable();
+  dataInput.forEach(ufo_sightings => {
+    var row = tbody.append("tr");
+    columns.forEach(column => row.append("td").text(ufo_sightings[column])
+    )
+  });
 }
 
-// handlePagesChange renders for new record count selected
-function handlePagesChange() {
-    renderTable();
-}
+//Populate table
+populate(data);
 
-// handleSearchButtonClick handles search button click:
-//    cleans input data
-//    checks for non-empty search fields and adds to filter
-//    renders table
-function handleSearchButtonClick() {
-    var filterDate = $dateTimeInput.value.trim();
-    var filterCity = $cityInput.value.trim().toLowerCase();
-    var filterState = $stateInput.value.trim().toLowerCase();
-    var filterCountry = $countryInput.value.trim().toLowerCase();
-    var filterShape = $shapeInput.value.trim().toLowerCase();
+// Filter by attribute
+button.on("click", () => {
+  d3.event.preventDefault();
+  var inputDate = inputField1.property("value").trim();
+  //Bonus Add On
+  var inputCity = inputField2.property("value").toLowerCase().trim();
+  var inputState = inputField3.property("value").toLowerCase().trim();
+  var inputCountry = inputField4.property("value").toLowerCase().trim();
+  var inputShape = inputField5.property("value").toLowerCase().trim();
 
-    if (filterDate != "") {
-        filteredData = filteredData.filter(function (date) {
-        var dataDate = date.datetime;
-        return dataDate === filterDate;
-    });
+  // Filter by field matching input value
+  var filterDate = data.filter(data => date.datetime === inputDate);
+  console.log(filterDate)
+  //Add On Bonus
+  var filterCity = data.filter(data => data.city === inputCity);
+  console.log(filterCity)
+  var filterData = data.filter(data => data.datetime === inputDate && data.city === inputCity);
+  console.log(filterStata)
+  var filterState = data.filter(data => data.state === inputState);
+  console.log(filterState)
+  var filterData = data.filter(data => data.datetime === inputDate && data.city === inputCity && data.state === inputState);
+  console.log(filterData)
+  var filterCountry = data.filter(data => data.country === inputCountry);
+  console.log(filterCountry)
+  var filterData = data.filter(data => data.datetime === inputDate && data.city === inputCity && data.state === inputState);
+  console.log(filterData)
+  var filterShape = data.filter(data => data.shape === inputShape);
+  console.log(filterShape)
+  var filterData = data.filter(data => data.datetime === inputDate && data.city === inputCity && data.state === inputState && data.country === inputCountry && data.shape === inputShape);
+  console.log(filterData)
+  
 
+  // Add filtered sighting to table
+  tbody.html("");
+
+  let response = {
+    filterData, filterCity, filterDate, filterState, filterCountry, filterShape
+  }
+
+  if (response.filterData.length !== 0) {
+    populate(filterData);
+  }
+    // else if (response.filterData.length === 0 && ((response.filterCity.length !== 0 || response.filterDate.length !== 0))){
+    //   populate(filterCity) || populate(filterDate);
+  
+    // }
+
+    else if (response.filterData.length === 0 && (( response.filterShape.length !== 0 || response.filterCountry.length !== 0 || response.filterState.length !== 0 || response.filterCity.length !== 0 || response.filterDate.length !== 0))){
+        populate(filterCity) || populate(filterDate) || populate(filterState) || populate(filterCountry) || populate(filterShape);
+    
     }
 
-    if (filterCity != "") {
-        filteredData = filteredData.filter(function (city) {
-        var dataCity = city.city;
-        return dataCity === filterCity;
-    });
-    }
 
-    if (filterState != "") {
-        filteredData = filteredData.filter(function (state) {
-            var dataState = state.state;
-            return dataState === filterState;
-        });
-    }
-
-    if (filterCountry != "") {
-        filteredData = filteredData.filter(function (country) {
-            var dataCountry = country.country;
-            return dataCountry === filterCountry;
-        });
-    }
-
-    if (filterShape != "") {
-        filteredData = filteredData.filter(function (shape) {
-            var dataShape = shape.shape;
-            return dataShape === filterShape;
-        });
-    }
-
-    renderTable();
-}
-
-// handleReloadButtonClick resets count and search fields, and renders
-function handleReloadButtonClick() {
-    count = 0;
-    filteredData = dataSet;
-    $dateTimeInput.value = '';
-    $cityInput.value = '';
-    $stateInput.value = '';
-    $countryInput.value = '';
-    $shapeInput.value = '';
-
-    renderTable();
-}
-
-// Define renderTable function
-function renderTable() {
-    // clear previously rendered table
-    $tbody.innerHTML = "";
-
-    // Get number of records to be rendered
-    var pages = Number(document.getElementById("pages").value);
-
-    // Initialize local variables
-    var start = count * pages + 1;
-    var end = start + pages - 1;
-    var btn;
-
-    // Adjusts records displayed for end of data and state of Next button
-    if (end > filteredData.length) {
-      end = filteredData.length;
-      btn = document.getElementById("next");
-      btn.disabled = true;
-    }
     else {
-      btn = document.getElementById("next");
-      btn.disabled = false;
+      tbody.append("tr").append("td").text("No results found!"); 
     }
+})
 
-    // Adjusts state of Previous button
-    if (start == 1) {
-      btn = document.getElementById("prev");
-      btn.disabled = true;
-    }
-    else {
-      btn = document.getElementById("prev");
-      btn.disabled = false;
-    }
-
-    // Displays record counts and loads records into table
-    $recordCounter.innerText = "From Record: " + start + " to: " + end + " of " + filteredData.length;
-    // Outer loop loads specified number of records
-    for (var i = 0; i < pages; i++) {
-        var item = filteredData[i+(count * pages)];
-        var fields = Object.keys(item);
-        var $row = $tbody.insertRow(i);
-        // Inner loop loads fields in record
-        for (var j = 0; j < fields.length; j++) {
-            var field = fields[j];
-            var $cell = $row.insertCell(j);
-            $cell.innerText = item[field];
-        }
-    }
-}
-
-// Provides initial render on open
-renderTable();
+resetbtn.on("click", () => {
+  tbody.html("");
+  populate(data)
+  console.log("Table reset")
+})
