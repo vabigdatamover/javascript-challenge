@@ -22,7 +22,7 @@ function buildTable(data) {
 
 var filters = {};
 
-function updateFilter() {
+function updateFilters() {
 
   //Save the elements
   var changedElement = d3.select(this).select("input");
@@ -34,7 +34,7 @@ function updateFilter() {
     filters[filterId] = elementValue;
   }
   else {
-    delete filter[filterId];
+    delete filters[filterId];
   }
   //Call filters
   filterTable();
@@ -42,19 +42,20 @@ function updateFilter() {
 }
 
 //Attach an event to listen to changes to each filter
-d3.selectAll(".filter").on("change", updateFilter);
+d3.selectAll(".filter").on("change", updateFilters);
+          //function filteredTable():void 
 
 function filterTable(){
 
   //Set the filterData to the tableData
-  let filterData = tableData;
+  let filteredData = tableData;
 
   //Loop through all filters and keep matches
   Object.entries(filters).forEach(([key, value]) => {
     filteredData = filteredData.filter(row => row[key] == value);
   });
   //Rebuild table using filtered data
-  buildTable(filterData);
+  buildTable(filteredData);
 }
 //Build the table when the page loads
 buildTable(tableData);
