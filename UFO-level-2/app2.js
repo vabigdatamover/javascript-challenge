@@ -9,7 +9,7 @@ function buildTable(data) {
   tbody.html("");
   //Loop and append
   data.forEach((dataRow) => {
-    var row  = tBody.append("tr");
+    var row  = tbody.append("tr");
     //Loop through Data Row
     Object.values(dataRow).forEach((val) => {
       var cell = row.append("td");
