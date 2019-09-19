@@ -1,11 +1,14 @@
-// Variables
+// Filter Button Variable
 var button = d3.select("#filter-btn");
+//Input Field 1 for Date Time Variable
 var inputField1 = d3.select("#datetime");
-var inputField2 = d3.select("#state");
+//TBODY in HTML
 var tbody = d3.select("tbody");
+//Reset Buttom Variable
 var resetbtn = d3.select("#reset-btn");
+//Column Variable
 var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
-
+//Populate Table
 var populate = (dataInput) => {
 
   dataInput.forEach(ufo_sightings => {
@@ -18,38 +21,35 @@ var populate = (dataInput) => {
 //Populate table
 populate(data);
 
-// Filter by attribute
+// Filter tables with click
 button.on("click", () => {
   d3.event.preventDefault();
   var inputDate = inputField1.property("value").trim();
-  var inputCity = inputField2.property("value").trim();
   // Filter by field matching input value
   var filterDate = data.filter(data => data.datetime === inputDate);
   console.log(filterDate)
-  var filterState = data.filter(data => data.state === inputState);
-  console.log(filterState)
-  var filterData = data.filter(data => data.datetime === inputDate && data.state === inputState);
+  var filterData = data.filter(data => data.datetime === inputDate);
   console.log(filterData)
 
-  // Add filtered sighting to table
+  // Add Data to table
   tbody.html("");
-
+  //Filter Data and Filter Date response
   let response = {
-    filterData, filterState, filterDate
+    filterData, filterDate
   }
 
   if (response.filterData.length !== 0) {
     populate(filterData);
   }
-    else if (response.filterData.length === 0 && ((response.filterState.length !== 0 || response.filterDate.length !== 0))){
-      populate(filterState) || populate(filterDate);
+    else if (response.filterData.length === 0 && ((response.filterDate.length !== 0))){
+      populate(filterDate);
   
     }
     else {
-      tbody.append("tr").append("td").text("No results found!"); 
+      tbody.append("tr").append("td").text("Encounter results not found!"); 
     }
 })
-
+//Reset Button Code
 resetbtn.on("click", () => {
   tbody.html("");
   populate(data)

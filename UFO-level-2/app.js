@@ -1,57 +1,61 @@
-// Variables
-var button = d3.select("#filter-btn");
-var inputField1 = d3.select("#datetime");
-var inputField2 = d3.select("#city");
+//from data.js
+var tableData = data;
+
+//get table reference 
 var tbody = d3.select("tbody");
-var resetbtn = d3.select("#reset-btn");
-var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
 
-var populate = (dataInput) => {
-
-  dataInput.forEach(ufo_sightings => {
-    var row = tbody.append("tr");
-    columns.forEach(column => row.append("td").text(ufo_sightings[column])
-    )
+function buildTable(data) {
+  //First clear out any old data
+  tbody.html("");
+  //Loop and append
+  data.forEach((dataRow) => {
+    var row  = tbody.append("tr");
+    //Loop through Data Row
+    Object.values(dataRow).forEach((val) => {
+      var cell = row.append("td");
+      cell.text(val);
+    });
   });
 }
 
-//Populate table
-populate(data);
+//Filter variable
 
-// Filter by attribute
-button.on("click", () => {
-  d3.event.preventDefault();
-  var inputDate = inputField1.property("value").trim();
-  var inputCity = inputField2.property("value").toLowerCase().trim();
-  // Filter by field matching input value
-  var filterDate = data.filter(data => data.datetime === inputDate);
-  console.log(filterDate)
-  var filterCity = data.filter(data => data.city === inputCity);
-  console.log(filterCity)
-  var filterData = data.filter(data => data.datetime === inputDate && data.city === inputCity);
-  console.log(filterData)
+var filters = {};
 
-  // Add filtered sighting to table
-  tbody.html("");
+function updateFilters() {
 
-  let response = {
-    filterData, filterCity, filterDate
+  //Save the elements
+  var changedElement = d3.select(this).select("input");
+  var elementValue = changedElement.property("value");
+  var filterId = changedElement.attr("id");
+
+  //filter arguements
+  if(elementValue) {
+    filters[filterId] = elementValue;
   }
-
-  if (response.filterData.length !== 0) {
-    populate(filterData);
+  else {
+    delete filters[filterId];
   }
-    else if (response.filterData.length === 0 && ((response.filterCity.length !== 0 || response.filterDate.length !== 0))){
-      populate(filterCity) || populate(filterDate);
-  
-    }
-    else {
-      tbody.append("tr").append("td").text("No results found!"); 
-    }
-})
+  //Call filters
+  filterTable();
 
-resetbtn.on("click", () => {
-  tbody.html("");
-  populate(data)
-  console.log("Table reset")
-})
+}
+
+//Attach an event to listen to changes to each filter
+d3.selectAll(".filter").on("change", updateFilters);
+          //function filteredTable():void 
+
+function filterTable(){
+
+  //Set the filterData to the tableData
+  let filteredData = tableData;
+
+  //Loop through all filters and keep matches
+  Object.entries(filters).forEach(([key, value]) => {
+    filteredData = filteredData.filter(row => row[key] == value);
+  });
+  //Rebuild table using filtered data
+  buildTable(filteredData);
+}
+//Build the table when the page loads
+buildTable(tableData);
